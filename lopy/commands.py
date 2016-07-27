@@ -1,3 +1,7 @@
+import os
+import pip
+import subprocess
+
 def install(lopy_dir, *args):
   os.environ["PYTHONUSERBASE"] = lopy_dir
 
@@ -5,7 +9,7 @@ def install(lopy_dir, *args):
     args = ("-r", "requirements.txt")
 
   pip.main(['install', '--user'] + list(args))
-  
+
 def do(lopy_dir, *args):
   pass
 

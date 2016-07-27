@@ -1,8 +1,5 @@
 import argparse
 import os
-import pip
-import site
-import subprocess
 import warnings
 
 from lopy.commands import install, do, run, execute
