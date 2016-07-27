@@ -51,11 +51,10 @@ def main():
   install_parser = parsers.add_parser('console', help='Spawn a console')
   install_parser.add_argument('args', nargs="*")
 
-
   # Create dict from argparse Namespace
   args = vars(parser.parse_args())
 
-  if len(args) == 0:
+  if len(args) == 0 or not args["command"]:
     quit(parser.print_help())
 
   method = args["command"]
