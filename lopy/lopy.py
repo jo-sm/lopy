@@ -1,10 +1,11 @@
 import argparse
 import os
+import pip
 import site
 import subprocess
 import warnings
 
-import pip
+from lopy.commands import install, do, run, execute
 
 def find_up(path):
   # Look for the following in order:
@@ -23,27 +24,8 @@ def find_up(path):
       return abs_path
   return find_up(abs_path + '/..')
 
-def install(lopy_dir, *args):
-  os.environ["PYTHONUSERBASE"] = lopy_dir
-
-  if len(args) == 0:
-    args = ("-r", "requirements.txt")
-
-  pip.main(['install', '--user'] + list(args))
-  
-def do(lopy_dir, *args):
-  pass
-
-def run(lopy_dir, *args):
-  execute(lopy_dir, *([ "python" ] + list(args)))
-
-def execute(lopy_dir, *args):
-  env = os.environ.copy()
-  env["PYTHONUSERBASE"] = lopy_dir
-  subprocess.Popen(list(args), env=env).communicate()
-
 # Example
-if __name__ == '__main__':
+def main():
   arg_dict = {
     "install": install,
     "do": do,
