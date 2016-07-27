@@ -1,9 +1,13 @@
 import argparse
 import configparser
 import os
-import warnings
+import sys
 
+from colorama import init, Fore
 from lopy.commands import install, do, run, execute, console
+
+# Initialize colorama
+init(autoreset=True)
 
 def find_up(path):
   # Look for the following in order:
@@ -22,7 +26,25 @@ def find_up(path):
       return abs_path
   return find_up(abs_path + '/..')
 
-# Example
+def lopy_help():
+    return '''lopy -- Install local Python packages
+
+Commands:
+  install   Local pip install (by default installs requirements.txt)
+            Usage: lopy install [dep_name]
+
+  do        Run a lopyconfig task
+            Usage: lopy do <task_name>
+
+  run       Run a python script at <path> (alias for `exec python`)
+            Usage: lopy run <script.py>
+
+  exec      Execute a program within the local lopy environment
+            Usage: lopy exec <command>
+
+  console   Spawn a console
+            Usage: lopy console
+    '''
 def main():
   arg_dict = {
     "install": install,
@@ -32,30 +54,15 @@ def main():
     "console": console
   }
 
-  # Add various parsers for commands
-  parser = argparse.ArgumentParser(description='lopy -- Install local Python packages')
-  parsers = parser.add_subparsers(title="Options", dest="command")
+  raw_args = sys.argv[1:]
 
-  install_parser = parsers.add_parser('install', help='Local pip install (by default installs requirements.txt). Usage: lopy install [dep_name]')
-  install_parser.add_argument('args', nargs="*")
-
-  do_parser = parsers.add_parser('do', help='Run a lopyconfig task. Usage: lopy do <task_name>')
-  do_parser.add_argument('args', nargs=1, metavar="task_name", help="Name of the task in lopyconfig")
-
-  run_parser = parsers.add_parser('run', help='Run a python script at <path> (alias for `exec python`). Usage: lopy run <script>')
-  run_parser.add_argument('args', nargs="+", metavar="script_name", help="The script name, e.g. `server.py`")
-
-  exec_parser = parsers.add_parser('exec', help='Execute a program within the local development environment. Usage: lopy exec <command>')
-  exec_parser.add_argument('args', nargs="+", metavar="command", help="Command to execute")
-
-  install_parser = parsers.add_parser('console', help='Spawn a console')
-  install_parser.add_argument('args', nargs="*")
-
-  # Create dict from argparse Namespace
-  args = vars(parser.parse_args())
-
-  if len(args) == 0 or not args["command"]:
-    quit(parser.print_help())
+  try:
+    args = {
+      "command": raw_args[0],
+      "args": raw_args[1:],
+    }
+  except IndexError:
+    quit(lopy_help())
 
   method = args["command"]
   method_arguments = args["args"]
@@ -63,7 +70,7 @@ def main():
   try:
     arg_dict[method]
   except KeyError:
-    quit(parser.print_help())
+    quit(lopy_help())
 
   # Find the closest directory to run lopy in
   lopy_dir = find_up(os.getcwd())
@@ -72,7 +79,7 @@ def main():
   if not lopy_dir:
     # We specifically allow installing a module directly
     if method == 'install' and len(method_arguments) > 0:
-      warnings.warn('Could not locate suitable directory. Using current directory...')
+      print(Fore.RED + 'Could not locate suitable directory. Using current directory...')
       lopy_dir = os.getcwd()
     else:
       quit("Could not locate .lopyconfig, .pip directory, requirements.txt, or .git directory")

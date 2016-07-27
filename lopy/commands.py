@@ -1,6 +1,9 @@
 import os
 import subprocess
-import warnings
+
+from colorama import init, Fore
+
+init(autoreset=True)
 
 def install(lopy_dir, config, *args):
   if len(args) == 0:
@@ -19,7 +22,7 @@ def do(lopy_dir, config, *args):
     task_command = config['tasks'][task_name]
     execute(lopy_dir, config, task_command)
   except KeyError:
-    warnings.warn("Task {} not found".format(task_name))
+    print(Fore.RED + "Task {} not found".format(task_name))
 
 def console(lopy_dir, config, *args):
   execute(lopy_dir, config, "python")

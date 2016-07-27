@@ -13,4 +13,7 @@ setup(
     		'lopy=lopy.lopy:main'
     	]
     },
+    install_requires=[
+      'colorama',
+    ],
 )
