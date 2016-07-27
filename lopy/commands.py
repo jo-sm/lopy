@@ -1,15 +1,15 @@
 import os
-import pip
 import subprocess
 import warnings
 
 def install(lopy_dir, config, *args):
-  os.environ["PYTHONUSERBASE"] = lopy_dir
-
   if len(args) == 0:
     args = ("-r", "requirements.txt")
 
-  pip.main(['install', '--user'] + list(args))
+  # We execute the command directly with subprocess
+  # instead of pip.main, because pip.main disregards
+  # setting os.environ["PYTHONUSERBASE"] in some cases
+  execute(lopy_dir, config, *(['pip', 'install', '--user'] + list(args)))
 
 def do(lopy_dir, config, *args):
   # Look for the task given at args[0]
