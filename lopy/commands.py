@@ -21,8 +21,11 @@ def do(lopy_dir, config, *args):
   except KeyError:
     warnings.warn("Task {} not found".format(task_name))
 
+def console(lopy_dir, config, *args):
+  execute(lopy_dir, config, "python")
+
 def run(lopy_dir, config, *args):
-  execute(lopy_dir, *([ "python" ] + list(args)))
+  execute(lopy_dir, config, *([ "python" ] + list(args)))
 
 def execute(lopy_dir, config, *args):
   env = os.environ.copy()

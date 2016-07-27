@@ -3,7 +3,7 @@ import configparser
 import os
 import warnings
 
-from lopy.commands import install, do, run, execute
+from lopy.commands import install, do, run, execute, console
 
 def find_up(path):
   # Look for the following in order:
@@ -29,6 +29,7 @@ def main():
     "do": do,
     "exec": execute,
     "run": run,
+    "console": console
   }
 
   # Add various parsers for commands
@@ -46,6 +47,10 @@ def main():
 
   exec_parser = parsers.add_parser('exec', help='Execute a program within the local development environment. Usage: lopy exec <command>')
   exec_parser.add_argument('args', nargs="+", metavar="command", help="Command to execute")
+
+  install_parser = parsers.add_parser('console', help='Spawn a console')
+  install_parser.add_argument('args', nargs="*")
+
 
   # Create dict from argparse Namespace
   args = vars(parser.parse_args())

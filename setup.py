@@ -1,11 +1,11 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='lopy',
     version='0.0.1',
-    packages=[' lopy' ],
+    packages=[ 'lopy' ],
     author='Joshua Smock',
-    url='https://github.com/jo-sm/lopy'
+    url='https://github.com/jo-sm/lopy',
     license='MIT',
     long_description=open('README.md').read(),
     entry_points={
