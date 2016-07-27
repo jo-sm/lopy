@@ -21,6 +21,28 @@ To run something, you have two options: `lopy run` and `lopy exec`. `lopy run` i
 > lopy run server.py
 ```
 
+If you define a task within your `.lopyconfig`, you can also run it with the `do` command:
+
+```
+> lopy do test
+```
+
+This will run the `test` task`.
+
+## Config
+
+You can configure `lopy` with the `.lopyconfig` file, which is a standard Python config file parsed by `configparser`. You can specify a `module_dir` key in the `config` section, which will be used instead of `.pip/`, and you can also specify tasks in the `tasks` section.
+
+### Sample Config
+
+```
+[config]
+module_dir=pip_modules
+
+[tasks]
+test=python test/test_runner.py
+```
+
 ## License
 
 MIT

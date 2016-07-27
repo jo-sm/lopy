@@ -68,13 +68,10 @@ def main():
   config = configparser.ConfigParser()
   config.read(lopy_dir + '/.lopyconfig')
   module_dir = '.pip'
-  config_keys = {}
 
   if len(config):
-    config_keys = config['config']
-
     try:
-      module_dir = config_keys['module_dir']
+      module_dir = config['config']['module_dir']
     except KeyError:
       pass
 

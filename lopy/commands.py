@@ -16,7 +16,7 @@ def do(lopy_dir, config, *args):
   task_name = args[0]
 
   try:
-    task_command = config[task_name]
+    task_command = config['tasks'][task_name]
     execute(lopy_dir, config, task_command)
   except KeyError:
     warnings.warn("Task {} not found".format(task_name))
