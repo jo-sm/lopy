@@ -1,4 +1,5 @@
 import argparse
+import configparser
 import os
 import warnings
 
@@ -63,6 +64,20 @@ def main():
   # Find the closest directory to run lopy in
   lopy_dir = find_up(os.getcwd())
 
+  # Check if `module_dir` key is present in `.lopyconfig`
+  config = configparser.ConfigParser()
+  config.read(lopy_dir + '/.lopyconfig')
+  module_dir = '.pip'
+  config_keys = {}
+
+  if len(config):
+    config_keys = config['config']
+
+    try:
+      module_dir = config_keys['module_dir']
+    except KeyError:
+      pass
+
   # Quit with error if could not find lopy_dir
   if not lopy_dir:
     # We specifically allow installing a module directly
@@ -72,6 +87,6 @@ def main():
     else:
       quit("Could not locate .lopyconfig, .pip directory, requirements.txt, or .git directory")
 
-  lopy_dir = lopy_dir + '/.pip'
+  lopy_dir = lopy_dir + '/' + module_dir
 
-  arg_dict[method](lopy_dir, *method_arguments)
+  arg_dict[method](lopy_dir, config, *method_arguments)

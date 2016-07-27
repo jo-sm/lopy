@@ -1,8 +1,9 @@
 import os
 import pip
 import subprocess
+import warnings
 
-def install(lopy_dir, *args):
+def install(lopy_dir, config, *args):
   os.environ["PYTHONUSERBASE"] = lopy_dir
 
   if len(args) == 0:
@@ -10,13 +11,20 @@ def install(lopy_dir, *args):
 
   pip.main(['install', '--user'] + list(args))
 
-def do(lopy_dir, *args):
-  pass
+def do(lopy_dir, config, *args):
+  # Look for the task given at args[0]
+  task_name = args[0]
 
-def run(lopy_dir, *args):
+  try:
+    task_command = config[task_name]
+    execute(lopy_dir, config, task_command)
+  except KeyError:
+    warnings.warn("Task {} not found".format(task_name))
+
+def run(lopy_dir, config, *args):
   execute(lopy_dir, *([ "python" ] + list(args)))
 
-def execute(lopy_dir, *args):
+def execute(lopy_dir, config, *args):
   env = os.environ.copy()
   env["PYTHONUSERBASE"] = lopy_dir
   subprocess.Popen(list(args), env=env).communicate()
