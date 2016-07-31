@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 
 from colorama import init, Fore
@@ -33,4 +34,5 @@ def run(lopy_dir, config, *args):
 def execute(lopy_dir, config, *args):
   env = os.environ.copy()
   env["PYTHONUSERBASE"] = lopy_dir
+  env["PATH"] = lopy_dir + '/bin:' + env.get('PATH', '')
   subprocess.Popen(list(args), env=env).communicate()
