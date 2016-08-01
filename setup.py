@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='lopy',
-    version='0.0.6',
+    version='0.0.7',
     packages=[ 'lopy' ],
     author='Joshua Smock',
     description="Local Python package manager",
