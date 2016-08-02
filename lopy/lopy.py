@@ -69,7 +69,12 @@ def main():
   try:
     arg_dict[method]
   except KeyError:
-    quit(lopy_help())
+    # If the command doesn't exist, see if the file exists
+    if os.path.isfile(method):
+      method_arguments = [ method ]
+      method = "run"
+    else:
+      quit(lopy_help())
 
   # Find the closest directory to run lopy in
   lopy_dir = find_up(os.getcwd())
