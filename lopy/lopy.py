@@ -71,7 +71,7 @@ def main():
   except KeyError:
     # If the command doesn't exist, see if the file exists
     if os.path.isfile(method):
-      method_arguments = [ method ]
+      method_arguments = [ method ] + method_arguments
       method = "run"
     else:
       quit(lopy_help())
