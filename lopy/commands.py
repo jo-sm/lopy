@@ -37,6 +37,7 @@ def execute(lopy_dir, config, *args):
   env["PATH"] = lopy_dir + '/bin:' + env.get('PATH', '')
   process = subprocess.Popen(list(args), env=env)
   _wait_for_process(process)
+  sys.exit(process.returncode)
 
 # Here we ignore any KeyboardInterrupt in the main process
 # and just continue to communicate with the subprocess
